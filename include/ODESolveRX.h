@@ -35,18 +35,62 @@ class LibRX : public LibBase {
 
   public :
 
+    /* number of boundary conditions
+     * at the first boundary
+     *
+     * There are n_func_y_ - n_boundary_i_ boundary conditions
+     * at the second boundary. */
     int n_boundary_i_;
+
+    /* number of bins in the x-direction
+     * number of mesh points becomes n_bin_x_ + 1 */
     int n_bin_x_;
 
+    /* parameter
+     * to set precision for convergence check */
     double conv_;
+
+    /* parameter
+     * to modulate application of corrections */
     double slowc_;
 
+    /* typical size
+     * of each function */
     double *scalv_;
+
+    /* specify ordering of functions
+     * such that there is no zero pivot element in s[i][j]
+     *
+     * For instance, if there are three functions and
+     * y[2] and y[3] are specified at the first boundary,
+     * we have
+     *   indexv_[1] = 3
+     *   indexv_[2] = 1
+     *   indexv_[3] = 2 */
     int *indexv_;
 
+    /* function pointers
+     * to define differential equations
+     *
+     * For i, j = 1 ... n_func_y_,
+     *   dy[i] / dx = g[i] (y[0 ... n_func_y_])
+     *   dgdy[i][j] = dg[i] / dy[j] (y[0 ... n_func_y_])
+     * where y[0] = x. */
     func_ode_deriv *ptr_func_g_;
     func_ode_deriv **ptr_func_dgdy_;
 
+    /* function pointers
+     * to define boundary conditions
+     *
+     * For i, j = 1 ... n_func_y_,
+     *   b[i] (y[0 ... n_func_y_]) = 0
+     *   dbdy[i][j] = db[i] / dy[j] (y[0 ... n_func_y_])
+     * where y[0] = x.
+     *
+     * i = 1 ... n_boundary_i_
+     * are reserved for the conditions at the first boundary.
+     * i = n_boundary_i_ + 1 ... n_func_y_
+     * are reserved for the conditions at the second boundary. */
     func_ode_deriv *ptr_func_b_;
     func_ode_deriv **ptr_func_dbdy_;
 
@@ -72,7 +116,29 @@ class LibRX : public LibBase {
         return;
     }
 
+    /* The following variables must be specified
+     * before calling alloc_func() function.
+     *   n_func_y_
+     *   n_boundary_i_
+     *   n_bin_x_
+     *
+     * After calling alloc_func() function,
+     * one needs to specify the following variables.
+     *   conv_
+     *   slowc_
+     *   scalv_
+     *   indexv_
+     *   ptr_func_g_
+     *   ptr_func_b_
+     *   ptr_func_dgdy_
+     *   ptr_func_dbdy_
+     *
+     * In addition, one has to feed the initial guess
+     * into tab_func_y_[0 ... n_func_y_][0 ... n_bin_x_] */
     void alloc_func();
+
+    /* a function to be called
+     * at the end of program */
     void free_func();
 
     void free_array() {
@@ -96,7 +162,17 @@ class LibRX : public LibBase {
         return;
     }
 
+    /* function to initialize the solver
+     *
+     * alloc_func() function must be called
+     * and aforementioned variables have to be specified
+     * before calling init() function. */
     void init();
+
+    /* function to implement relaxation method
+     *
+     * One needs to repeatedly call next() function
+     * until it returns true. */
     bool next();
 
     void difeq_internal(int k, int k1, int k2,
