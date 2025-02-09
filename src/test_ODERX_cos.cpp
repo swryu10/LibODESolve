@@ -3,23 +3,44 @@
 #include<math.h>
 #include"ODESolveRX.h"
 
+/* This test demonstrates differential equation
+ * for cosine function y = cos(x)
+ *   y'' = -y
+ * with boundary conditions
+ *   y'(x = 0) = 0 and
+ *   y(x = 2 pi) = 1.
+ *
+ * The second-order differential equation is rewritten
+ * as a set of first-order differential equations,
+ * where one defines y[1] = y and y[2] = y'.
+ *   dy[1] / dx = g[1] = y[2]
+ *   dy[2] / dx = g[2] = -y[1] */
+
 double y2_ini = 0.;
 double y1_fin = 1.;
 
+// differential equation for y[1]
 double func_g1(double *y) {
     return y[2];
 }
+
+// differential equation for y[2]
 double func_g2(double *y) {
     return -y[1];
 }
 
+// the first boundary condition b[1]
 double func_b1(double *y) {
     return y[2] - y2_ini;
 }
+
+// the second boundary condition b[2]
 double func_b2(double *y) {
     return y[1] - y1_fin;
 }
 
+/* derivatives of g[i]
+ * with respect to y[j] */
 double func_dg11(double *y) {
     return 0.;
 }
@@ -33,6 +54,8 @@ double func_dg22(double *y) {
     return 0.;
 }
 
+/* derivatives of b[i]
+ * with respect to y[j] */
 double func_db11(double *y) {
     return 0.;
 }

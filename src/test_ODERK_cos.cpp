@@ -3,12 +3,28 @@
 #include<math.h>
 #include"ODESolveRK.h"
 
+/* This test demonstrates differential equation
+ * for cosine function y = cos(x)
+ *   y'' = -y
+ * with initial conditions
+ *   y(x = 0) = 1 and
+ *   y'(x = 0) = 0.
+ *
+ * The second-order differential equation is rewritten
+ * as a set of first-order differential equations,
+ * where one defines y[1] = y and y[2] = y'.
+ *   dy[1] / dx = g[1] = y[2]
+ *   dy[2] / dx = g[2] = -y[1] */
+
 double y1_ini = 1.;
 double y2_ini = 0.;
 
+// differential equation for y[1]
 double func_g1(double *y) {
     return y[2];
 }
+
+// differential equation for y[2]
 double func_g2(double *y) {
     return -y[1];
 }
