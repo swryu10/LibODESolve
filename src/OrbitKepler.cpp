@@ -55,6 +55,10 @@ void OrbitKepler::init(double r_i_in,
 
     ptr_odesol_->init();
 
+    tab_t_.resize(n_bin_t_ + 1);
+    tab_x_.resize(n_bin_t_ + 1);
+    tab_y_.resize(n_bin_t_ + 1);
+
     initialized_ = true;
 
     return;
@@ -67,6 +71,16 @@ void OrbitKepler::find_orbit() {
 
     for (int it = 0; it < n_bin_t_; it++) {
         ptr_odesol_->evolve_RK4(delta_t_);
+    }
+
+    for (int it = 0; it <= n_bin_t_; it++) {
+        tab_t_[it] = ptr_odesol_->tab_func_y_[0][it];
+
+        double r_now = ptr_odesol_->tab_func_y_[1][it];
+        double phi_now = ptr_odesol_->tab_func_y_[3][it];
+
+        tab_x_[it] = r_now * cos(phi_now);
+        tab_y_[it] = r_now * sin(phi_now);
     }
 
     return;
