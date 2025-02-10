@@ -254,9 +254,9 @@ void GeodesicSphere::find_geodesic() {
             for (int jxi = 0; jxi < 2; jxi++) {
                 xvec[jxi][0] = sin(tab_phi_[ixi - jxi]);
                 xvec[jxi][1] = cos(tab_phi_[ixi - jxi]) *
-                              cos(tab_lambda_[ixi - jxi]);
+                               cos(tab_lambda_[ixi - jxi]);
                 xvec[jxi][2] = cos(tab_phi_[ixi - jxi]) *
-                              sin(tab_lambda_[ixi - jxi]);
+                               sin(tab_lambda_[ixi - jxi]);
             }
 
             double cos_dist =
