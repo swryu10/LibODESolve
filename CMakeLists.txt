@@ -25,6 +25,13 @@ set_target_properties(test_ODERX_cos PROPERTIES OUTPUT_NAME "test_ODERX_cos.exec
 target_link_libraries(test_ODERX_cos PUBLIC ODESolveRX)
 target_include_directories(test_ODERX_cos PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
+project(proj_OrbitKepler)
+add_executable(proj_OrbitKepler ${PROJECT_SOURCE_DIR}/src/OrbitKepler.cpp
+                                ${PROJECT_SOURCE_DIR}/src/main_proj_kepler.cpp)
+set_target_properties(proj_OrbitKepler PROPERTIES OUTPUT_NAME "proj_OrbitKepler.exec")
+target_link_libraries(proj_OrbitKepler PUBLIC ODESolveRK)
+target_include_directories(proj_OrbitKepler PUBLIC "${PROJECT_SOURCE_DIR}/include")
+
 project(proj_GeodesicSphere)
 add_executable(proj_GeodesicSphere ${PROJECT_SOURCE_DIR}/src/GeodesicSphere.cpp
                                    ${PROJECT_SOURCE_DIR}/src/main_proj_geodesic.cpp)
