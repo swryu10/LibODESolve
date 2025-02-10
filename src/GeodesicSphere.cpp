@@ -105,6 +105,8 @@ void GeodesicSphere::init(double phi_deg_i, double lambda_deg_i,
                           double xmin_in,
                           double xmax_in,
                           double delta_x_in) {
+    free_odesolve();
+
     phi_ini_ = phi_deg_i * fac_deg_to_rad_;
     phi_fin_ = phi_deg_f * fac_deg_to_rad_;
 

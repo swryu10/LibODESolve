@@ -36,12 +36,20 @@ class GeodesicSphere {
     }
 
     ~GeodesicSphere() {
+        free_odesolve();
+
+        return;
+    }
+
+    void free_odesolve() {
         if (!initialized_) {
             return;
         }
 
         ptr_odesol_->free_func();
         delete ptr_odesol_;
+
+        initialized_ = false;
 
         return;
     }
