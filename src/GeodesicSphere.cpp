@@ -102,9 +102,9 @@ double func_db44(double *y) {return 0.;}
 void GeodesicSphere::init(double phi_deg_i, double lambda_deg_i,
                           double phi_deg_f, double lambda_deg_f,
                           double lambda_deg_b,
-                          double xmin_in,
-                          double xmax_in,
-                          double delta_x_in) {
+                          double xi_min_in,
+                          double xi_max_in,
+                          double delta_xi_in) {
     free_odesolve();
 
     phi_ini_ = phi_deg_i * fac_deg_to_rad_;
@@ -130,32 +130,32 @@ void GeodesicSphere::init(double phi_deg_i, double lambda_deg_i,
     ptr_odesol_->n_func_y_ = 4;
     ptr_odesol_->n_boundary_i_ = 2;
 
-    xmin_ = xmin_in;
-    xmax_ = xmax_in;
-    delta_x_ = delta_x_in;
+    xi_min_ = xi_min_in;
+    xi_max_ = xi_max_in;
+    delta_xi_ = delta_xi_in;
 
-    int n_bin_x_in =
-        (int)ceil(fabs(xmax_ - xmin_) / delta_x_);
-    delta_x_ = fabs(xmax_ - xmin_) / 
-               static_cast<double>(n_bin_x_in);
-    ptr_odesol_->n_bin_x_ = n_bin_x_in;
+    int n_bin_xi_in =
+        (int)ceil(fabs(xi_max_ - xi_min_) / delta_xi_);
+    delta_xi_ = fabs(xi_max_ - xi_min_) / 
+               static_cast<double>(n_bin_xi_in);
+    ptr_odesol_->n_bin_x_ = n_bin_xi_in;
 
     ptr_odesol_->alloc_func();
-    for (int ix = 0; ix <= ptr_odesol_->n_bin_x_; ix++) {
-        double xnow = xmin_ + delta_x_ * static_cast<double>(ix);
+    for (int ixi = 0; ixi <= ptr_odesol_->n_bin_x_; ixi++) {
+        double xi_now = xi_min_ + delta_xi_ * static_cast<double>(ixi);
 
-        ptr_odesol_->tab_func_y_[0][ix] = xnow;
+        ptr_odesol_->tab_func_y_[0][ixi] = xi_now;
 
-        ptr_odesol_->tab_func_y_[1][ix] =
-            (phi_ini_ * (xmax_ - xnow) +
-             phi_fin_ * (xnow - xmin_)) / (xmax_ - xmin_);
-        ptr_odesol_->tab_func_y_[2][ix] =
-            (lambda_ini_ * (xmax_ - xnow) +
-             lambda_fin_ * (xnow - xmin_)) / (xmax_ - xmin_);
-        ptr_odesol_->tab_func_y_[3][ix] =
-            (phi_fin_ - phi_ini_) / (xmax_ - xmin_);
-        ptr_odesol_->tab_func_y_[4][ix] =
-            (lambda_fin_ - lambda_ini_) / (xmax_ - xmin_);
+        ptr_odesol_->tab_func_y_[1][ixi] =
+            (phi_ini_ * (xi_max_ - xi_now) +
+             phi_fin_ * (xi_now - xi_min_)) / (xi_max_ - xi_min_);
+        ptr_odesol_->tab_func_y_[2][ixi] =
+            (lambda_ini_ * (xi_max_ - xi_now) +
+             lambda_fin_ * (xi_now - xi_min_)) / (xi_max_ - xi_min_);
+        ptr_odesol_->tab_func_y_[3][ixi] =
+            (phi_fin_ - phi_ini_) / (xi_max_ - xi_min_);
+        ptr_odesol_->tab_func_y_[4][ixi] =
+            (lambda_fin_ - lambda_ini_) / (xi_max_ - xi_min_);
     }
 
     ptr_odesol_->conv_ = 1.0e-5;
@@ -217,11 +217,11 @@ void GeodesicSphere::init(double phi_deg_i, double lambda_deg_i,
 
     ptr_odesol_->init();
 
-    int n_size_tab_x = ptr_odesol_->n_bin_x_ + 1;
-    tab_x_.resize(n_size_tab_x);
-    tab_phi_.resize(n_size_tab_x);
-    tab_lambda_.resize(n_size_tab_x);
-    tab_distance_.resize(n_size_tab_x);
+    int n_size_tab_xi = ptr_odesol_->n_bin_x_ + 1;
+    tab_xi_.resize(n_size_tab_xi);
+    tab_phi_.resize(n_size_tab_xi);
+    tab_lambda_.resize(n_size_tab_xi);
+    tab_distance_.resize(n_size_tab_xi);
 
     initialized_ = true;
 
@@ -242,21 +242,21 @@ void GeodesicSphere::find_geodesic() {
     xvec[0] = new double[3];
     xvec[1] = new double[3];
 
-    for (int ix = 0; ix <= ptr_odesol_->n_bin_x_; ix++) {
-        tab_x_[ix] = ptr_odesol_->tab_func_y_[0][ix];
+    for (int ixi = 0; ixi <= ptr_odesol_->n_bin_x_; ixi++) {
+        tab_xi_[ixi] = ptr_odesol_->tab_func_y_[0][ixi];
 
-        tab_phi_[ix] = ptr_odesol_->tab_func_y_[1][ix];
-        tab_lambda_[ix] = ptr_odesol_->tab_func_y_[2][ix];
+        tab_phi_[ixi] = ptr_odesol_->tab_func_y_[1][ixi];
+        tab_lambda_[ixi] = ptr_odesol_->tab_func_y_[2][ixi];
 
-        if (ix == 0) {
-            tab_distance_[ix] = 0.;
+        if (ixi == 0) {
+            tab_distance_[ixi] = 0.;
         } else {
-            for (int jx = 0; jx < 2; jx++) {
-                xvec[jx][0] = sin(tab_phi_[ix - jx]);
-                xvec[jx][1] = cos(tab_phi_[ix - jx]) *
-                              cos(tab_lambda_[ix - jx]);
-                xvec[jx][2] = cos(tab_phi_[ix - jx]) *
-                              sin(tab_lambda_[ix - jx]);
+            for (int jxi = 0; jxi < 2; jxi++) {
+                xvec[jxi][0] = sin(tab_phi_[ixi - jxi]);
+                xvec[jxi][1] = cos(tab_phi_[ixi - jxi]) *
+                              cos(tab_lambda_[ixi - jxi]);
+                xvec[jxi][2] = cos(tab_phi_[ixi - jxi]) *
+                              sin(tab_lambda_[ixi - jxi]);
             }
 
             double cos_dist =
@@ -264,8 +264,8 @@ void GeodesicSphere::find_geodesic() {
                 xvec[0][1] * xvec[1][1] +
                 xvec[0][2] * xvec[1][2];
 
-            tab_distance_[ix] =
-                tab_distance_[ix - 1] + acos(cos_dist);
+            tab_distance_[ixi] =
+                tab_distance_[ixi - 1] + acos(cos_dist);
         }
     }
 

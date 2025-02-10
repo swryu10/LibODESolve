@@ -18,13 +18,13 @@ class GeodesicSphere {
 
     double lambda_base_;
 
-    double xmin_;
-    double xmax_;
-    double delta_x_;
+    double xi_min_;
+    double xi_max_;
+    double delta_xi_;
 
-    /* tabulated x
+    /* tabulated xi
      * (parametric variable) */
-    std::vector<double> tab_x_;
+    std::vector<double> tab_xi_;
     /* tabulated latitude
      * in radian */
     std::vector<double> tab_phi_;
@@ -60,7 +60,7 @@ class GeodesicSphere {
             return;
         }
 
-        tab_x_.clear();
+        tab_xi_.clear();
         tab_phi_.clear();
         tab_lambda_.clear();
         tab_distance_.clear();
@@ -86,18 +86,18 @@ class GeodesicSphere {
      *       lambda_deg_i, such that
      *       |lambda_deg_i - lambda_deg_b| < pi.
      *       Default value is 0.
-     *   xmin_in : minimum value of the parametric variable x
+     *   xi_min_in : minimum value of the parametric variable xi
      *       Default value is 0.
-     *   xmax_in : maximum value of the parametric variable x
+     *   xi_max_in : maximum value of the parametric variable xi
      *       Default value is 1.
-     *   delta_x_in : increment in x for each mesh point
+     *   delta_xi_in : increment in xi for each mesh point
      *       Default value is 0.0005 */
     void init(double phi_deg_i, double lambda_deg_i,
               double phi_deg_f, double lambda_deg_f,
               double lambda_deg_b = 0.,
-              double xmin_in = 0.,
-              double xmax_in = 1.,
-              double delta_x_in = 0.0005);
+              double xi_min_in = 0.,
+              double xi_max_in = 1.,
+              double delta_xi_in = 0.0005);
 
     /* solve differential equations
      * to obtain the geodesic
@@ -122,17 +122,17 @@ class GeodesicSphere {
         }
 
         fprintf(ptr_fout, "# output from GeodesicSphere\n");
-        fprintf(ptr_fout, "# x    ");
+        fprintf(ptr_fout, "# xi    ");
         fprintf(ptr_fout, "latitude(deg)    ");
         fprintf(ptr_fout, "longitude(deg)    ");
         fprintf(ptr_fout, "distance/radius\n");
 
-        for (int ix = 0; ix <= ptr_odesol_->n_bin_x_; ix++) {
+        for (int ixi = 0; ixi <= ptr_odesol_->n_bin_x_; ixi++) {
             fprintf(ptr_fout, "    %e    %e    %e    %e\n",
-                    tab_x_[ix],
-                    tab_phi_[ix] / fac_deg_to_rad_,
-                    tab_lambda_[ix] / fac_deg_to_rad_,
-                    tab_distance_[ix]);
+                    tab_xi_[ixi],
+                    tab_phi_[ixi] / fac_deg_to_rad_,
+                    tab_lambda_[ixi] / fac_deg_to_rad_,
+                    tab_distance_[ixi]);
         }
 
         fclose(ptr_fout);
