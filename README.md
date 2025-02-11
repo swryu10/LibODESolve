@@ -3,7 +3,7 @@ LibODESolve \
 A C++ library to solve ordinary differential equations \
 \
 Currently, the following components are available. \
-&ensp;IntTrapezoid (module) \
+&ensp;IntTrapezoid (module + OpenMP) \
 &ensp;&ensp;Trapezoidal rule for 1D numerical integration \
 &ensp;ODESolve::LibRK (class) \
 &ensp;&ensp;Runge-Kutta method for initial condition problems \
