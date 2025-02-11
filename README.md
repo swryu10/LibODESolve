@@ -19,8 +19,8 @@ It also contains the following examples to demonstrate library usage. \
 &ensp;&ensp;calculates Kepler orbits \
 &ensp;&ensp;by solving Newtonian dynamics with Runge-Kutta method \
 &ensp;GeodesicSphere \
-&ensp;&ensp;finds geodesics (shortest path between two points) \
-&ensp;&ensp;on a sphere \
+&ensp;&ensp;finds geodesics (shortest path between two points) on a sphere \
+&ensp;&ensp;by solving geodesic equation with relaxation method \
 \
 This library can be built with cmake. \
 One can build at a subdirectory with the following commands. \
