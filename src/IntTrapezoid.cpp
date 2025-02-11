@@ -25,6 +25,11 @@ double get_integral_trapezoidal(double xmin, double xmax,
         #ifdef _OPENMP
         int n_thread = omp_get_num_threads();
         int tid = omp_get_thread_num();
+        if (ptr_log_IntTrapezoid_ != NULL) {
+            fprintf(ptr_log_IntTrapezoid_,
+                "  n_thread = %d, tid = %d\n",
+                n_thread, tid);
+        }
         #else
         int n_thread = 1;
         int tid = 0;

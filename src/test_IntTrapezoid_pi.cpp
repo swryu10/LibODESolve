@@ -12,7 +12,7 @@ double func_integrand(double u) {
 
 int main(int argc, char *argv[]) {
     ODESolve::ptr_log_IntTrapezoid_ = stderr;
-    ODESolve::eps_precision_IntTrapezoid_ = 1e-8;
+    ODESolve::eps_precision_IntTrapezoid_ = 1e-10;
 
     double (*ptr_func_integrand)(double) = &func_integrand;
 
@@ -22,9 +22,9 @@ int main(int argc, char *argv[]) {
 
     //fprintf(stdout, "\n");
     fprintf(stdout, "pi from numerical integration\n");
-    fprintf(stdout, "  > pi = %.8f\n", pi_now);
+    fprintf(stdout, "  > pi = %.10f\n", pi_now);
     fprintf(stdout, "pi from C math library\n");
-    fprintf(stdout, "  > pi = %.8f\n", M_PI);
+    fprintf(stdout, "  > pi = %.10f\n", M_PI);
 
     return 0;
 }

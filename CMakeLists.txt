@@ -1,10 +1,5 @@
 cmake_minimum_required(VERSION 3.31)
 
-project(IntTrapezoid)
-add_library(IntTrapezoid STATIC)
-target_sources(IntTrapezoid PUBLIC ${PROJECT_SOURCE_DIR}/src/IntTrapezoid.cpp)
-target_include_directories(IntTrapezoid PUBLIC "${PROJECT_SOURCE_DIR}/include")
-
 project(ODESolveRK)
 add_library(ODESolveRK STATIC)
 target_sources(ODESolveRK PUBLIC ${PROJECT_SOURCE_DIR}/src/ODESolveBase.cpp
@@ -17,12 +12,6 @@ target_sources(ODESolveRX PUBLIC ${PROJECT_SOURCE_DIR}/src/ODESolveBase.cpp
                                  ${PROJECT_SOURCE_DIR}/src/nrutil.c
                                  ${PROJECT_SOURCE_DIR}/src/ODESolveRX.cpp)
 target_include_directories(ODESolveRX PUBLIC "${PROJECT_SOURCE_DIR}/include")
-
-project(test_IntTrapezoid_pi)
-add_executable(test_IntTrapezoid_pi ${PROJECT_SOURCE_DIR}/src/test_IntTrapezoid_pi.cpp)
-set_target_properties(test_IntTrapezoid_pi PROPERTIES OUTPUT_NAME "test_IntTrapezoid_pi.exec")
-target_link_libraries(test_IntTrapezoid_pi PUBLIC IntTrapezoid)
-target_include_directories(test_IntTrapezoid_pi PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
 project(test_ODERK_cos)
 add_executable(test_ODERK_cos ${PROJECT_SOURCE_DIR}/src/test_ODERK_cos.cpp)
@@ -49,3 +38,22 @@ add_executable(proj_GeodesicSphere ${PROJECT_SOURCE_DIR}/src/GeodesicSphere.cpp
 set_target_properties(proj_GeodesicSphere PROPERTIES OUTPUT_NAME "proj_GeodesicSphere.exec")
 target_link_libraries(proj_GeodesicSphere PUBLIC ODESolveRX)
 target_include_directories(proj_GeodesicSphere PUBLIC "${PROJECT_SOURCE_DIR}/include")
+
+project(IntTrapezoid)
+find_package(OpenMP)
+if (OPENMP_FOUND)
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+endif()
+add_library(IntTrapezoid STATIC)
+target_sources(IntTrapezoid PUBLIC ${PROJECT_SOURCE_DIR}/src/IntTrapezoid.cpp)
+target_include_directories(IntTrapezoid PUBLIC "${PROJECT_SOURCE_DIR}/include")
+
+project(test_IntTrapezoid_pi)
+if (OPENMP_FOUND)
+    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
+add_executable(test_IntTrapezoid_pi ${PROJECT_SOURCE_DIR}/src/test_IntTrapezoid_pi.cpp)
+set_target_properties(test_IntTrapezoid_pi PROPERTIES OUTPUT_NAME "test_IntTrapezoid_pi.exec")
+target_link_libraries(test_IntTrapezoid_pi PUBLIC IntTrapezoid)
+target_include_directories(test_IntTrapezoid_pi PUBLIC "${PROJECT_SOURCE_DIR}/include")
