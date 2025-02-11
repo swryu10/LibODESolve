@@ -2,10 +2,12 @@ LibODESolve \
 \
 A C++ library to solve ordinary differential equations \
 \
-Currently, the following classes are available. \
-&ensp;ODESolve::LibRK \
+Currently, the following components are available. \
+&ensp;IntTrapezoid (module) \
+&ensp;&ensp;Trapezoidal rule for 1D numerical integration \
+&ensp;ODESolve::LibRK (class) \
 &ensp;&ensp;Runge-Kutta method for initial condition problems \
-&ensp;ODESolve::LibRX \
+&ensp;ODESolve::LibRX (class) \
 &ensp;&ensp;Relaxation method for boundary condition problems \
 &ensp;&ensp;(based on Numerical Recipes in C) \
 \
