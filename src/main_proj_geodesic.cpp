@@ -34,12 +34,7 @@ int main(int argc, char *argv[]) {
            getenv("LIBODE_PATH_PYTHON"));
     //fprintf(stderr, "  %s\n", env_libode_path_python);
     geolocation.path_python_ = env_libode_path_python;
-
-    char env_libode_path_module[1000];
-    strcpy(env_libode_path_module,
-           getenv("LIBODE_PATH_MODULE"));
-    //fprintf(stderr, "  %s\n", env_libode_path_module);
-    geolocation.path_module_ = env_libode_path_module;
+    geolocation.path_module_ = "./";
 
     geolocation.init();
 

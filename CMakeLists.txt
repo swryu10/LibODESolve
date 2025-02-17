@@ -42,6 +42,7 @@ target_link_libraries(proj_GeodesicSphere PUBLIC ODESolveRX
                                                  ${Python_LIBRARIES})
 target_include_directories(proj_GeodesicSphere PUBLIC "${PROJECT_SOURCE_DIR}/include"
                                                       "${Python_INCLUDE_DIRS}")
+file(COPY "${PROJECT_SOURCE_DIR}/src/GeoIATA.py" DESTINATION "${CMAKE_BINARY_DIR}")
 
 project(IntTrapezoid)
 find_package(OpenMP)
