@@ -7,7 +7,7 @@
 class WrapGeoIATA {
   private :
 
-    PyObject *ptr_py_instance_ = NULL;
+    PyObject *ptr_py_instance_;
 
     std::string name_city_;
     std::string name_country_;
@@ -22,6 +22,8 @@ class WrapGeoIATA {
     std::string path_module_;
 
     WrapGeoIATA() {
+        ptr_py_instance_ = NULL;
+
         path_python_ = "";
         path_module_ = "";
 
