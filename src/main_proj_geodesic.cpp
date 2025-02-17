@@ -41,22 +41,12 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "Origin :\n");
     geolocation.set_location(name_org);
     geolocation.verbose();
-
-    std::string name_city_ini;
-    std::string name_country_ini;
-    geolocation.get_city(&name_city_ini);
-    geolocation.get_country(&name_country_ini);
     double phi_deg_i = geolocation.get_latitude();
     double lambda_deg_i = geolocation.get_longitude();
 
     fprintf(stdout, "Destination :\n");
     geolocation.set_location(name_dst);
     geolocation.verbose();
-
-    std::string name_city_fin;
-    std::string name_country_fin;
-    geolocation.get_city(&name_city_fin);
-    geolocation.get_country(&name_country_fin);
     double phi_deg_f = geolocation.get_latitude();
     double lambda_deg_f = geolocation.get_longitude();
 
