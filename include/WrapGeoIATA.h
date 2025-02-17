@@ -47,7 +47,9 @@ class WrapGeoIATA {
 
     void init();
 
-    void set_location(char *code_iata);
+    void set_location(std::string &code_iata);
+
+    void verbose(FILE *ptr_log = stdout);
 
     void get_city(std::string *ptr_name) {
         *ptr_name = name_city_;

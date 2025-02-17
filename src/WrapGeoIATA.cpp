@@ -55,7 +55,7 @@ void WrapGeoIATA::init() {
     return;
 }
 
-void WrapGeoIATA::set_location(char *code_iata) {
+void WrapGeoIATA::set_location(std::string &code_iata) {
     if (!initialized_ || ptr_py_instance_ == NULL) {
         return;
     }
@@ -69,7 +69,7 @@ void WrapGeoIATA::set_location(char *code_iata) {
     p_value_input =
         PyObject_CallMethod(ptr_py_instance_,
                             "import_airport",
-                            "s", code_iata);
+                            "s", code_iata.c_str());
 
     p_value_city =
         PyObject_CallMethod(ptr_py_instance_,
@@ -88,6 +88,19 @@ void WrapGeoIATA::set_location(char *code_iata) {
     p_value_lon = PyObject_CallMethod(ptr_py_instance_,
                                       "get_longitude", NULL);
     lon_deg_ = PyFloat_AS_DOUBLE(p_value_lon);
+
+    return;
+}
+
+void WrapGeoIATA::verbose(FILE *ptr_log) {
+    if (!initialized_ || ptr_log == NULL) {
+        return;
+    }
+
+    fprintf(ptr_log, "  %s, %s\n",
+        name_city_.c_str(), name_country_.c_str());
+    fprintf(ptr_log, "    lat (deg) = %e\n", lat_deg_);
+    fprintf(ptr_log, "    lon (deg) = %e\n", lon_deg_);
 
     return;
 }

@@ -1,44 +1,71 @@
 #include"GeodesicSphere.h"
-
-// latitude (degree)
-double phi_deg_ICN = 37.4602;
-double phi_deg_JFK = 40.6413;
-double phi_deg_LAX = 33.9416;
-double phi_deg_HNL = 21.3069;
-double phi_deg_SIN = 1.3521;
-double phi_deg_LHR = 51.4700;
-double phi_deg_FRA = 50.0379;
-double phi_deg_SYD = -33.8688;
-double phi_deg_GRU = -23.4306;
-double phi_deg_JNB = -26.2041;
-double phi_deg_DXB = 25.2048;
-
-// longitude (degree)
-double lambda_deg_ICN = 126.4407;
-double lambda_deg_JFK = (360. - 73.7781);
-double lambda_deg_LAX = (360. - 118.4085);
-double lambda_deg_HNL = (360. - 157.8583);
-double lambda_deg_SIN = 103.8198;
-double lambda_deg_LHR = -0.4543;
-double lambda_deg_FRA = 8.5622;
-double lambda_deg_SYD = 151.2093;
-double lambda_deg_GRU = - 46.4730;
-double lambda_deg_JNB = 28.0473;
-double lambda_deg_DXB = 55.2708;
+#include"WrapGeoIATA.h"
 
 int main(int argc, char *argv[]) {
     GeodesicSphere geosphere;
+    WrapGeoIATA geolocation;
 
-    char name_org[] = "ICN";
-    char name_dst[] = "LAX";
+    std::string name_org;
+    if (argc > 1) {
+        name_org = argv[1];
+    } else {
+        char name_in[100];
+        fprintf(stdout, "IATA code for the origin : ");
+        scanf("%s", name_in);
 
-    double phi_deg_i = phi_deg_ICN;
-    double phi_deg_f = phi_deg_LAX;
+        name_org = name_in;
+    }
 
-    double lambda_deg_i = 0.;
-    double lambda_deg_f = lambda_deg_LAX - lambda_deg_ICN;
+    std::string name_dst;
+    if (argc > 2) {
+        name_dst = argv[2];
+    } else {
+        char name_in[100];
+        fprintf(stdout, "IATA code for the destination : ");
+        scanf("%s", name_in);
 
-    double lambda_deg_b = 0.;
+        name_dst = name_in;
+    }
+
+    fprintf(stdout, "\n");
+
+    char env_libode_path_python[1000];
+    strcpy(env_libode_path_python,
+           getenv("LIBODE_PATH_PYTHON"));
+    //fprintf(stderr, "  %s\n", env_libode_path_python);
+    geolocation.path_python_ = env_libode_path_python;
+
+    char env_libode_path_module[1000];
+    strcpy(env_libode_path_module,
+           getenv("LIBODE_PATH_MODULE"));
+    //fprintf(stderr, "  %s\n", env_libode_path_module);
+    geolocation.path_module_ = env_libode_path_module;
+
+    geolocation.init();
+
+    fprintf(stdout, "Origin :\n");
+    geolocation.set_location(name_org);
+    geolocation.verbose();
+
+    std::string name_city_ini;
+    std::string name_country_ini;
+    geolocation.get_city(&name_city_ini);
+    geolocation.get_country(&name_country_ini);
+    double phi_deg_i = geolocation.get_latitude();
+    double lambda_deg_i = geolocation.get_longitude();
+
+    fprintf(stdout, "Destination :\n");
+    geolocation.set_location(name_dst);
+    geolocation.verbose();
+
+    std::string name_city_fin;
+    std::string name_country_fin;
+    geolocation.get_city(&name_city_fin);
+    geolocation.get_country(&name_country_fin);
+    double phi_deg_f = geolocation.get_latitude();
+    double lambda_deg_f = geolocation.get_longitude();
+
+    double lambda_deg_b = lambda_deg_i;
 
     double xmin = 0.;
     double xmax = 1.;
@@ -52,9 +79,9 @@ int main(int argc, char *argv[]) {
 
     char fname_out[200];
     strcpy(fname_out, "geodesic_");
-    strcat(fname_out, name_org);
+    strcat(fname_out, name_org.c_str());
     strcat(fname_out, "_");
-    strcat(fname_out, name_dst);
+    strcat(fname_out, name_dst.c_str());
     strcat(fname_out, ".txt");
 
     geosphere.export_geodesic(fname_out);
