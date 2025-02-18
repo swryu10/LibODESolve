@@ -61,6 +61,7 @@ void WrapGeoIATA::set_location(std::string &code_iata) {
     }
 
     PyObject *p_value_input;
+    PyObject *p_value_found;
     PyObject *p_value_city;
     PyObject *p_value_country;
     PyObject *p_value_lat;
@@ -70,6 +71,11 @@ void WrapGeoIATA::set_location(std::string &code_iata) {
         PyObject_CallMethod(ptr_py_instance_,
                             "import_airport",
                             "s", code_iata.c_str());
+
+    p_value_found =
+        PyObject_CallMethod(ptr_py_instance_,
+                            "get_found", NULL);
+    is_found_ = PyObject_IsTrue(p_value_found) != 0;
 
     p_value_city =
         PyObject_CallMethod(ptr_py_instance_,

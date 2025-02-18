@@ -40,12 +40,27 @@ int main(int argc, char *argv[]) {
 
     fprintf(stdout, "Origin :\n");
     geolocation.set_location(name_org);
+    if (!geolocation.get_found()) {
+        fprintf(stderr, "  IATA code %s not found.\n",
+                name_org.c_str());
+        fprintf(stderr, "  Program aborted.\n");
+
+        return 0;
+    }
     geolocation.verbose();
     double phi_deg_i = geolocation.get_latitude();
     double lambda_deg_i = geolocation.get_longitude();
 
     fprintf(stdout, "Destination :\n");
     geolocation.set_location(name_dst);
+    if (!geolocation.get_found()) {
+        fprintf(stderr, "  IATA code %s not found.\n",
+                name_dst.c_str());
+
+        fprintf(stderr, "  Program aborted.\n");
+
+        return 0;
+    }
     geolocation.verbose();
     double phi_deg_f = geolocation.get_latitude();
     double lambda_deg_f = geolocation.get_longitude();

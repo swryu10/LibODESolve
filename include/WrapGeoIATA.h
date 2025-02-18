@@ -9,6 +9,7 @@ class WrapGeoIATA {
 
     PyObject *ptr_py_instance_;
 
+    bool is_found_;
     std::string name_city_;
     std::string name_country_;
     double lat_deg_;
@@ -27,6 +28,7 @@ class WrapGeoIATA {
         path_python_ = "";
         path_module_ = "";
 
+        is_found_ = false;
         name_city_ = "";
         name_country_ = "";
         lat_deg_ = 0.;
@@ -52,6 +54,8 @@ class WrapGeoIATA {
     void set_location(std::string &code_iata);
 
     void verbose(FILE *ptr_log = stdout);
+
+    bool get_found() {return is_found_;}
 
     void get_city(std::string *ptr_name) {
         *ptr_name = name_city_;
