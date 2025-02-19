@@ -11,7 +11,8 @@ The following components are currently available. \
 &ensp;&ensp;Relaxation method for boundary condition problems \
 &ensp;&ensp;(based on Numerical Recipes in C) \
 \
-It also contains the following examples to demonstrate library usage. \
+It also contains the following examples to demonstrate library usage.
+Please find documentations in doc subdirectory for more detail. \
 &ensp;Calculation of pi \
 &ensp;&ensp;by means of trapezoidal rule \
 &ensp;&ensp;for 1-dimensional integration \
