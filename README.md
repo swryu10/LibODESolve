@@ -15,9 +15,9 @@ It also contains the following examples to demonstrate library usage.
 Please find documentations in doc subdirectory for more detail.
 * Calculation of &pi; \
 by means of trapezoidal rule for 1-dimensional integration
-* **OrbitKepler** \
+* **OrbitKepler** (class) \
 calculates Kepler orbits by solving Newtonian dynamics with Runge-Kutta method
-* **GeodesicSphere** \
+* **GeodesicSphere** (class) \
 finds geodesics (shortest path between two points) on a sphere by solving geodesic equation with relaxation method
 
 # Build
