@@ -21,8 +21,8 @@ calculates Kepler orbits by solving Newtonian dynamics with Runge-Kutta method
 finds geodesics (shortest path between two points) on a sphere by solving geodesic equation with relaxation method
 
 # Build
-This library can be built with cmake. \
-In a Linux/UNIX system, one can build at a subdirectory with the following commands. \
+This library can be built with **cmake**. \
+In a **Linux/UNIX** system, one can build at a subdirectory with the following commands. \
 &ensp;$ mkdir [subdirectory name] \
 &ensp;$ cd [subdirectory name] \
 &ensp;$ cmake [directory for the LibODESolve local repository] \
