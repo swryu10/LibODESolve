@@ -43,8 +43,9 @@ target_include_directories(proj_OrbitKepler PUBLIC "${PROJECT_SOURCE_DIR}/includ
 
 project(proj_GeodesicSphere)
 find_package(Python COMPONENTS Interpreter Development)
-add_executable(proj_GeodesicSphere ${PROJECT_SOURCE_DIR}/src/GeodesicSphere.cpp
+add_executable(proj_GeodesicSphere ${PROJECT_SOURCE_DIR}/src/PythonHook.cpp
                                    ${PROJECT_SOURCE_DIR}/src/WrapGeoIATA.cpp
+                                   ${PROJECT_SOURCE_DIR}/src/GeodesicSphere.cpp
                                    ${PROJECT_SOURCE_DIR}/src/main_proj_geodesic.cpp)
 set_target_properties(proj_GeodesicSphere PROPERTIES OUTPUT_NAME "proj_GeodesicSphere.exec")
 target_link_libraries(proj_GeodesicSphere PUBLIC ODESolve

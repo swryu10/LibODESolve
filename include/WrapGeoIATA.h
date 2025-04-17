@@ -7,7 +7,7 @@
 class WrapGeoIATA {
   private :
 
-    PyObject *ptr_py_instance_;
+    PyObject *ptr_py_GeoIATA_;
 
     bool is_found_;
     std::string name_city_;
@@ -19,14 +19,8 @@ class WrapGeoIATA {
 
   public :
 
-    std::string path_python_;
-    std::string path_module_;
-
     WrapGeoIATA() {
-        ptr_py_instance_ = NULL;
-
-        path_python_ = "";
-        path_module_ = "";
+        ptr_py_GeoIATA_ = NULL;
 
         is_found_ = false;
         name_city_ = "";
@@ -39,15 +33,7 @@ class WrapGeoIATA {
         return;
     }
 
-    ~WrapGeoIATA() {
-        if (!initialized_) {
-            return;
-        }
-
-        Py_Finalize();
-
-        return;
-    }
+    ~WrapGeoIATA() {}
 
     void init();
 
@@ -57,16 +43,12 @@ class WrapGeoIATA {
 
     bool get_found() {return is_found_;}
 
-    void get_city(std::string *ptr_name) {
-        *ptr_name = name_city_;
-
-        return;
+    std::string get_city() {
+        return name_city_;
     }
 
-    void get_country(std::string *ptr_name) {
-        *ptr_name = name_country_;
-
-        return;
+    std::string get_country() {
+        return name_country_;
     }
 
     double get_latitude() {return lat_deg_;}

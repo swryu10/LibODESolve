@@ -1,9 +1,19 @@
-#include"GeodesicSphere.h"
+#include"PythonHook.h"
 #include"WrapGeoIATA.h"
+#include"GeodesicSphere.h"
 
 int main(int argc, char *argv[]) {
-    GeodesicSphere geosphere;
+    char env_libode_path_python[1000];
+    strcpy(env_libode_path_python,
+           getenv("LIBODE_PATH_PYTHON"));
+    //fprintf(stderr, "  %s\n", env_libode_path_python);
+    PythonHook::path_python_ = env_libode_path_python;
+    PythonHook::path_module_ = "./";
+
+    PythonHook::func_py_ini();
+
     WrapGeoIATA geolocation;
+    geolocation.init();
 
     std::string name_org;
     if (argc > 1) {
@@ -28,15 +38,6 @@ int main(int argc, char *argv[]) {
     }
 
     fprintf(stdout, "\n");
-
-    char env_libode_path_python[1000];
-    strcpy(env_libode_path_python,
-           getenv("LIBODE_PATH_PYTHON"));
-    //fprintf(stderr, "  %s\n", env_libode_path_python);
-    geolocation.path_python_ = env_libode_path_python;
-    geolocation.path_module_ = "./";
-
-    geolocation.init();
 
     fprintf(stdout, "Origin :\n");
     geolocation.set_location(name_org);
@@ -71,6 +72,7 @@ int main(int argc, char *argv[]) {
     double xmax = 1.;
     double deltax = 0.0001;
 
+    GeodesicSphere geosphere;
     geosphere.init(phi_deg_i, lambda_deg_i,
                    phi_deg_f, lambda_deg_f,
                    lambda_deg_b,
@@ -85,6 +87,8 @@ int main(int argc, char *argv[]) {
     strcat(fname_out, ".txt");
 
     geosphere.export_geodesic(fname_out);
+
+    PythonHook::func_py_fin();
 
     return 0;
 }
