@@ -1,37 +1,21 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include"PythonHook.h"
 #include"WrapGeoIATA.h"
 
 void WrapGeoIATA::init() {
-    PyObject *ptr_py_name =
-        PyUnicode_DecodeFSDefault("GeoIATA");
-    if (ptr_py_name == NULL) {
-        return;
-    }
-
-    PyObject *ptr_py_module =
-        PyImport_Import(ptr_py_name);
-    if (ptr_py_module == NULL) {
-        return;
-    }
-
-    Py_DECREF(ptr_py_name);
-
+    std::string name_module = "GeoIATA";
     PyObject *ptr_py_dict =
-        PyModule_GetDict(ptr_py_module);
-    if (ptr_py_dict == NULL) {
-        return;
-    }
+        PythonHook::get_ptr_dict(name_module);
 
-    Py_DECREF(ptr_py_module);
-
+    std::string name_class = "GeoLocation";
     PyObject *ptr_py_class =
-        PyDict_GetItemString(ptr_py_dict, "GeoLocation");
-    if (PyCallable_Check(ptr_py_class)) {
-        ptr_py_GeoIATA_ =
-            PyObject_CallObject(ptr_py_class, NULL);
-    } else {
+        PythonHook::get_ptr_class(ptr_py_dict, name_class);
+
+    ptr_py_GeoIATA_ =
+        PythonHook::get_ptr_instance(ptr_py_class, NULL);
+    if (ptr_py_GeoIATA_ == NULL) {
         return;
     }
 
