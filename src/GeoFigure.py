@@ -17,6 +17,9 @@ def reset() :
     list_lat = []
     list_lon = []
 
+    return
+# end of module reset
+
 def set_origin(code_iata_ini) :
     geo_loc_ini = GeoIATA.GeoLocation()
     geo_loc_ini.import_airport(code_iata_ini)
@@ -30,6 +33,9 @@ def set_origin(code_iata_ini) :
     list_city.append(str_iata_city)
     list_lat.append(geo_loc_ini.get_latitude())
     list_lon.append(geo_loc_ini.get_longitude())
+
+    return
+# end of module set_origin
 
 def add_destination(code_iata_add) :
     i_org = len(list_iata) - 1
@@ -90,6 +96,9 @@ def add_destination(code_iata_add) :
         )
     )
 
+    return
+# end of module add_destination
+
 def present() :
     fig.add_trace(
         go.Scattergeo(
@@ -110,6 +119,7 @@ def present() :
     )
 
     fig.update_geos(
+        showcountries = True, countrycolor = "grey",
         showcoastlines = True, coastlinecolor = "black",
         showland = True, landcolor = "lightyellow",
         showocean = True, oceancolor = "lightskyblue",
@@ -118,3 +128,6 @@ def present() :
 
     fig.update_geos(projection_type = "orthographic")
     fig.show()
+
+    return
+# end of module present
