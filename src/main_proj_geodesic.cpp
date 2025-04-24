@@ -88,6 +88,8 @@ int main(int argc, char *argv[]) {
 
     geosphere.export_geodesic(fname_out);
 
+    geolocation.free_ptr_py();
+
     PythonHook::func_py_fin();
 
     return 0;

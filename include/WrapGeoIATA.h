@@ -7,6 +7,8 @@
 class WrapGeoIATA {
   private :
 
+    PyObject *ptr_py_dict_;
+    PyObject *ptr_py_class_;
     PyObject *ptr_py_GeoIATA_;
 
     bool is_found_;
@@ -20,6 +22,8 @@ class WrapGeoIATA {
   public :
 
     WrapGeoIATA() {
+        ptr_py_dict_ = NULL;
+        ptr_py_class_ = NULL;
         ptr_py_GeoIATA_ = NULL;
 
         is_found_ = false;
@@ -34,6 +38,18 @@ class WrapGeoIATA {
     }
 
     ~WrapGeoIATA() {}
+
+    void free_ptr_py() {
+        if (!initialized_) {
+            return;
+        }
+
+        Py_XDECREF(ptr_py_dict_);
+        Py_XDECREF(ptr_py_class_);
+        Py_XDECREF(ptr_py_GeoIATA_);
+
+        return;
+    }
 
     void init();
 

@@ -6,15 +6,15 @@
 
 void WrapGeoIATA::init() {
     std::string name_module = "GeoIATA";
-    PyObject *ptr_py_dict =
+    ptr_py_dict_ =
         PythonHook::get_ptr_dict(name_module);
 
     std::string name_class = "GeoLocation";
-    PyObject *ptr_py_class =
-        PythonHook::get_ptr_class(ptr_py_dict, name_class);
+    ptr_py_class_ =
+        PythonHook::get_ptr_class(ptr_py_dict_, name_class);
 
     ptr_py_GeoIATA_ =
-        PythonHook::get_ptr_instance(ptr_py_class, NULL);
+        PythonHook::get_ptr_instance(ptr_py_class_, NULL);
     if (ptr_py_GeoIATA_ == NULL) {
         return;
     }
@@ -40,29 +40,35 @@ void WrapGeoIATA::set_location(std::string &code_iata) {
         PyObject_CallMethod(ptr_py_GeoIATA_,
                             "import_airport",
                             "s", code_iata.c_str());
+    Py_DECREF(p_value_input);
 
     p_value_found =
         PyObject_CallMethod(ptr_py_GeoIATA_,
                             "get_found", NULL);
     is_found_ = PyObject_IsTrue(p_value_found) != 0;
+    Py_DECREF(p_value_found);
 
     p_value_city =
         PyObject_CallMethod(ptr_py_GeoIATA_,
                             "get_city", NULL);
     name_city_ = PyUnicode_AsUTF8(p_value_city);
+    Py_DECREF(p_value_city);
 
     p_value_country =
         PyObject_CallMethod(ptr_py_GeoIATA_,
                             "get_country", NULL);
     name_country_ = PyUnicode_AsUTF8(p_value_country);
+    Py_DECREF(p_value_country);
 
     p_value_lat = PyObject_CallMethod(ptr_py_GeoIATA_,
                                       "get_latitude", NULL);
     lat_deg_ = PyFloat_AS_DOUBLE(p_value_lat);
+    Py_DECREF(p_value_lat);
 
     p_value_lon = PyObject_CallMethod(ptr_py_GeoIATA_,
                                       "get_longitude", NULL);
     lon_deg_ = PyFloat_AS_DOUBLE(p_value_lon);
+    Py_DECREF(p_value_lon);
 
     return;
 }
