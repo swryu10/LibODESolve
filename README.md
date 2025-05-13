@@ -3,7 +3,7 @@ A C++ library to solve ordinary differential equations
 
 # Ingredients
 The following components are currently available.
-* **IntTrapezoid** (module + OpenMP) \
+* **IntTrapezoid** (module + `OpenMP`) \
 Trapezoidal rule for 1-dimensional numerical integration
 * **ODESolve::LibRK** (class) \
 Runge-Kutta method for initial condition problems
@@ -21,7 +21,7 @@ calculates Kepler orbits by solving Newtonian dynamics with Runge-Kutta method
 finds geodesics (shortest path between two points) on a sphere by solving geodesic equation with relaxation method
 
 Note that, in the case of running the geodesic example, Python modules `plotly` and `airportsdata` are required to visualize and obtain latitude and longitude from IATA codes (for the origin and destination airports).
-In a **Linux/UNIX** system, one can install `plotly` and `airportsdata` in a Python virtual environment (venv) by running the following commands.
+In a **Linux/UNIX** system, one can create a Python virtual environment (venv) and install `plotly` and `airportsdata` by running the following commands.
 ```
 $ python3 -m venv [directory for venv]
 $ source [directory for venv]/bin/activate
