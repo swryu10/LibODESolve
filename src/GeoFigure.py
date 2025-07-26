@@ -18,7 +18,7 @@ def reset() :
     list_lon = []
 
     return
-# end of module reset
+# end of function reset
 
 def set_origin(code_iata_ini) :
     geo_loc_ini = GeoIATA.GeoLocation()
@@ -35,7 +35,7 @@ def set_origin(code_iata_ini) :
     list_lon.append(geo_loc_ini.get_longitude())
 
     return
-# end of module set_origin
+# end of function set_origin
 
 def add_destination(code_iata_add) :
     i_org = len(list_iata) - 1
@@ -97,7 +97,7 @@ def add_destination(code_iata_add) :
     )
 
     return
-# end of module add_destination
+# end of function add_destination
 
 def present() :
     fig.add_trace(
@@ -130,4 +130,4 @@ def present() :
     fig.show()
 
     return
-# end of module present
+# end of function present
