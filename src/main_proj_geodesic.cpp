@@ -7,8 +7,8 @@ int main(int argc, char *argv[]) {
     strcpy(env_libode_path_python,
            getenv("LIBODE_PATH_PYTHON"));
     //fprintf(stderr, "  %s\n", env_libode_path_python);
-    PythonHook::path_python_ = env_libode_path_python;
-    PythonHook::path_module_ = "./";
+    PythonHook::set_path_python(env_libode_path_python);
+    PythonHook::set_path_module("./");
 
     PythonHook::func_py_ini();
 

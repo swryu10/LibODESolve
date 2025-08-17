@@ -1,11 +1,9 @@
 #include"PythonHook.h"
 
-namespace PythonHook {
+std::string PythonHook::path_python_ = "./";
+std::string PythonHook::path_module_ = "./";
 
-std::string path_python_ = "./";
-std::string path_module_ = "./";
-
-void func_py_ini() {
+void PythonHook::func_py_ini() {
     setenv("PYTHONPATH", path_python_.c_str(), 1);
 
     char state_sys_append[100];
@@ -20,13 +18,25 @@ void func_py_ini() {
     return;
 }
 
-void func_py_fin() {
+void PythonHook::func_py_fin() {
     Py_Finalize();
 
     return;
 }
 
-PyObject *get_ptr_dict(std::string name_module) {
+void PythonHook::set_path_python(std::string path_in) {
+    path_python_ = path_in;
+
+    return;
+}
+
+void PythonHook::set_path_module(std::string path_in) {
+    path_module_ = path_in;
+
+    return;
+}
+
+PyObject *PythonHook::get_ptr_dict(std::string name_module) {
     PyObject *ptr_py_name =
         PyUnicode_DecodeFSDefault(name_module.c_str());
     if (ptr_py_name == NULL) {
@@ -49,8 +59,8 @@ PyObject *get_ptr_dict(std::string name_module) {
     return ptr_py_dict;
 }
 
-PyObject *get_ptr_class(PyObject *ptr_py_dict,
-                        std::string name_class) {
+PyObject *PythonHook::get_ptr_class(PyObject *ptr_py_dict,
+                                    std::string name_class) {
     PyObject *ptr_py_class =
         PyDict_GetItemString(ptr_py_dict, name_class.c_str());
 
@@ -61,8 +71,8 @@ PyObject *get_ptr_class(PyObject *ptr_py_dict,
     }
 }
 
-PyObject *get_ptr_instance(PyObject *ptr_py_class,
-                           PyObject *ptr_py_args) {
+PyObject *PythonHook::get_ptr_instance(PyObject *ptr_py_class,
+                                       PyObject *ptr_py_args) {
     if (ptr_py_class == NULL) {
         return NULL;
     }
@@ -72,5 +82,3 @@ PyObject *get_ptr_instance(PyObject *ptr_py_class,
 
     return ptr_py_instance;
 }
-
-} // end namespace PythonHook

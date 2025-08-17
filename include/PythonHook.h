@@ -4,20 +4,26 @@
 #include<string>
 #include<Python.h>
 
-namespace PythonHook {
+class PythonHook {
+  private :
 
-extern std::string path_python_;
-extern std::string path_module_;
+    static std::string path_python_;
+    static std::string path_module_;
 
-void func_py_ini();
-void func_py_fin();
+  public :
 
-PyObject *get_ptr_dict(std::string name_module);
-PyObject *get_ptr_class(PyObject *ptr_py_dict,
-                        std::string name_class);
-PyObject *get_ptr_instance(PyObject *ptr_py_class,
-                           PyObject *ptr_py_args = NULL);
+    static void func_py_ini();
+    static void func_py_fin();
 
-} // end namespace PythonHook
+    static void set_path_python(std::string path_in);
+    static void set_path_module(std::string path_in);
+
+    static PyObject *get_ptr_dict(std::string name_module);
+    static PyObject *get_ptr_class(PyObject *ptr_py_dict,
+                                   std::string name_class);
+    static PyObject *get_ptr_instance(PyObject *ptr_py_class,
+                                      PyObject *ptr_py_args = NULL);
+
+};
 
 #endif
